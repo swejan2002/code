@@ -7,3 +7,10 @@ Jinja2==3.1.2
 MarkupSafe==2.1.1
 Werkzeug==2.2.2
 zipp==3.10.0
+SQLAlchemy==2.0.29
+Flask-SQLAlchemy==3.1.1
+mysql-connector-python==8.3.0
+
+
+
+
