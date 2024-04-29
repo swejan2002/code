@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+          crossorigin="anonymous">
+    
+
+          <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f8f9fa;
+                color: #333;
+            }
+
+            .container {
+                margin-top: 100px;
+            }
+            .tile {
+                display: block;
+                background-color: #fff;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+                text-decoration: none;
+                color: #333;
+                transition: transform 0.3s ease;
+            }
+            .tile:hover {
+                transform: translateY(-5px);
+            }
+            .user-details {
+                background-color: #fff;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+                margin-bottom: 20px;
+            }
+            .user-details h2 {
+                margin-top: 0;
+                color: #333;
+            }
+            .user-details ul {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+            .user-details ul li {
+                margin-bottom: 10px;
+            }
+            .user-details ul li strong {
+                margin-right: 5px;
+                color: #777;
+            }
+            footer {
+                background-color: #241a2d;
+                color: #fff;
+                text-align: center;
+                padding: 20px 0;
+            }
+        </style>
+    <title>Property Management</title>
+</head>
+
+<body>
+    <div class="navbar navbar-fixed">
+        <img src="static/logo.png" alt="Logo" class="navbar-logo">
+        <div class="navbar-links">
+            <a href="/login_home" >Home</a>
+            <a href="/admin_queries">Queries</a>
+            <a href="/daily_job">Daily Job</a>
+            <form action="/logout" method="POST">
+                <input type="submit" value="Logout" class="btn btn-danger">
+            </form>
+        </div>
+    </div>
+
+    <div class="container">
+       
+        <div style="background-color: #241a2d; display: flex; justify-content: space-between; align-items: center; padding: 10px;">
+            <h3 style="color: #ffffff;">Service Requests</h3>
+        </div>
+        <br><br>
+        <form action="/admin_service_requests" method="POST">
+            <label for="user_id">Filter by User ID:</label>
+            <input type="text" id="user_id" name="user_id">
+            <label for="user_address">Filter by Address:</label>
+            <input type="text" id="user_address" name="user_address">
+            <input type="submit" style="background-color: #241a2d; color: #ffffff;" value="Apply Filters">
+        </form>
+        <br>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Request ID</th>
+                    <th>Email</th>
+                    <th>User ID</th>
+                    <th>Phone Number</th>
+                    <th>Address</th>
+                    <th>Subject</th>
+                    <th>Message</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for service_request in service_requests %}
+                <tr>
+                    <td>{{ service_request.id }}</td>
+                    <td>{{ service_request.email }}</td>
+                    <td>{{ service_request.application_id }}</td>
+                    <td>{{ service_request.phone_number }}</td>
+                    <td>{{ service_request.address }}</td>
+                    <td>{{ service_request.subject }}</td>
+                    <td>{{ service_request.message }}</td>
+                    <td>{{ service_request.status }}</td>
+                    <td>
+                        <form action="/progress_service/{{ service_request.id }}" method="POST">
+                            <button type="submit" class="btn btn-success">Progress</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form action="/close_service/{{ service_request.id }}" method="POST">
+                            <button type="submit" class="btn btn-danger">Close</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div style="background-color: #241a2d; display: flex; justify-content: space-between; align-items: center; padding: 10px;">
+            <h3 style="color: #ffffff;">Closed Service Requests</h3>
+        </div>
+        <br><br>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Request ID</th>
+                    <th>Email</th>
+                    <th>User ID</th>
+                    <th>Phone Number</th>
+                    <th>Address</th>
+                    <th>Subject</th>
+                    <th>Message</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for old_service_request in old_service_requests %}
+                <tr>
+                    <td>{{ old_service_request.id }}</td>
+                    <td>{{ old_service_request.email }}</td>
+                    <td>{{ old_service_request.application_id }}</td>
+                    <td>{{ old_service_request.phone_number }}</td>
+                    <td>{{ old_service_request.address }}</td>
+                    <td>{{ old_service_request.subject }}</td>
+                    <td>{{ old_service_request.message }}</td>
+                    <td>{{ old_service_request.status }}</td>
+                    <td>
+                        <form action="/progress_service/{{ old_service_request.id }}" method="POST">
+                            <button type="submit" class="btn btn-success">Progress</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form action="/close_service/{{ old_service_request.id }}" method="POST">
+                            <button type="submit" class="btn btn-danger">Close</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+
+    </div>    
+    <br><br><br><br>
+    <div style="background-color: #241a2d; display: flex; justify-content: space-between; align-items: center; padding: 10px;">
+
+        <a href="/">
+            <img style="max-width: 30%;" src="static/logo.png" alt="logo">
+        </a>
+    
+        <p style="color: #ffffff; margin: 0; text-align: right;">
+            © 2023 Property. All Rights Reserved.
+            <br>
+            Information About Brokerage Services 
+            <br>
+            TREC Consumer Notice
+        </p>
+    
+    </div>
+    
+</body>
+
+</html>
+
+
+
+
+
+
+

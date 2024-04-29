@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+          crossorigin="anonymous">
+          <style>
+            /* Add custom styles here */
+            .team-members {
+                display: flex;
+                justify-content: space-between;
+                flex-wrap: wrap;
+            }
+    
+            .member {
+                text-align: center;
+                margin-bottom: 20px;
+                flex-basis: calc(33.33% - 20px); /* Adjust the width as needed */
+            }
+    
+            .member img {
+                max-width: 100%;
+                height: auto;
+                width: 200px; /* Adjust the size as needed */
+                height: 200px; /* Adjust the size as needed */
+                object-fit: cover; /* Ensure the image covers the entire circle */
+            }
+
+
+            .filters {
+            margin-bottom: 20px;
+            }
+
+            .filter-select {
+                margin-right: 10px;
+            }
+        </style>
+    <title>Property Management</title>
+</head>
+
+<body>
+    <div class="navbar navbar-fixed">
+        <img src="static/logo.png" alt="Logo" class="navbar-logo">
+        <div class="navbar-links">
+            <a href="/">Home</a>
+            <a href="/listings">Property Listings</a>
+            <a href="/resident">Login</a>
+            <a href="/resident">Service Request</a>
+            <a href="/team">Our Team</a>
+            <a href="/about">About</a>
+            <a href="/contact">Contact</a>
+        </div>
+    </div>
+
+    <br><br> <br>
+    <div class="container">
+        <div>
+            <h1 style="color: #241a2d;">Find Your Residential Property Here !</h1>
+        </div>
+
+        <br>
+
+        <form method="POST" action="{{ url_for('listings') }}" id="filter-form" class="my-3">
+            <div class="form-row align-items-end">
+                <div class="col-md-3 mb-3">
+                    <label for="county-filter" class="sr-only">County:</label>
+                    <select name="county-filter" id="county-filter" class="form-control">
+                        <option value="">Select County</option>
+                        {% for county in counties %}
+                            <option value="{{ county }}">{{ county }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+        
+                <div class="col-md-3 mb-3">
+                    <label for="state-filter" class="sr-only">State:</label>
+                    <select name="state-filter" id="state-filter" class="form-control">
+                        <option value="">Select State</option>
+                        {% for state in states %}
+                            <option value="{{ state }}">{{ state }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+        
+                <div class="col-md-3 mb-3">
+                    <label for="country-filter" class="sr-only">Country:</label>
+                    <select name="country-filter" id="country-filter" class="form-control">
+                        <option value="">Select Country</option>
+                        {% for country in countries %}
+                            <option value="{{ country }}">{{ country }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+        
+                <div class="col-md-3 mb-3">
+                    <button style="background-color: #241a2d" type="submit" class="btn btn-primary">Apply Filters</button>
+                </div>
+            </div>
+        </form>
+        
+        
+        {% if message %}
+        <div class="alert alert-info" role="alert">
+            {{ message }}
+        </div>
+        {% endif %}
+
+        <br>
+        <div class="team-members">
+            {% for listing in listings %}
+                {% if (not filter_county or listing.county == filter_county) and
+                      (not filter_state or listing.state == filter_state) and
+                      (not filter_country or listing.country == filter_country) %}
+                    <div class="member">
+                        <a href="{{ url_for('listing_details', listing_id=listing.id) }}">
+                            <img src="{{ url_for('static', filename=listing.images[0].image_url) }}" alt="{{ listing.property_address }} Image">
+                            <h3>{{ listing.property_address }}</h3>
+                            <h4>{{ listing.price }}</h4>
+                            <p><strong>Description:</strong> {{ listing.description }}</p>
+                        </a>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+        
+    </div>
+    <br>
+    <br>
+
+
+    <div style="background-color: #241a2d; display: flex; justify-content: space-between; align-items: center; padding: 10px;">
+
+        <a href="/">
+            <img style="max-width: 30%;" src="static/logo.png" alt="logo">
+        </a>
+    
+        <p style="color: #ffffff; margin: 0; text-align: right;">
+            © 2023 Property. All Rights Reserved.
+            <br>
+            Information About Brokerage Services 
+            <br>
+            TREC Consumer Notice
+        </p>
+    
+    </div>
+</body>
+
+</html>

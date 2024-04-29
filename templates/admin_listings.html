@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+          crossorigin="anonymous">
+    
+
+          <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f8f9fa;
+                color: #333;
+            }
+
+            .container {
+                margin-top: 100px;
+            }
+            .tile {
+                display: block;
+                background-color: #fff;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+                text-decoration: none;
+                color: #333;
+                transition: transform 0.3s ease;
+            }
+            .tile:hover {
+                transform: translateY(-5px);
+            }
+            .user-details {
+                background-color: #fff;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+                margin-bottom: 20px;
+            }
+            .user-details h2 {
+                margin-top: 0;
+                color: #333;
+            }
+            .user-details ul {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+            .user-details ul li {
+                margin-bottom: 10px;
+            }
+            .user-details ul li strong {
+                margin-right: 5px;
+                color: #777;
+            }
+            footer {
+                background-color: #241a2d;
+                color: #fff;
+                text-align: center;
+                padding: 20px 0;
+            }
+        </style>
+    <title>Property Management</title>
+</head>
+
+<body>
+    <div class="navbar navbar-fixed">
+        <img src="static/logo.png" alt="Logo" class="navbar-logo">
+        <div class="navbar-links">
+            <a href="/login_home" >Home</a>
+            <a href="/admin_queries">Queries</a>
+            <a href="/daily_job">Daily Job</a>
+            <a href="/admin_listings_details">Listings</a>
+            <form action="/logout" method="POST">
+                <input type="submit" value="Logout" class="btn btn-danger">
+            </form>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Display any message if available -->
+        {% if message %}
+        <div class="alert alert-info" role="alert">
+            {{ message }}
+        </div>
+        {% endif %}
+
+        <!-- Add a form to collect new listing information -->
+    
+        <div style="background-color: #241a2d; display: flex; justify-content: space-between; align-items: center; padding: 10px;">
+            <h3 style="color: #ffffff;">Add New Listing</h1>
+        </div>
+        <br><br>
+        <form action="/admin_listings" method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="property_address">Property Address:</label>
+                <input type="text" id="property_address" name="property_address" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Add number of Beds and Baths:</label>
+                <input type="text" id="description" name="description" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="long_description">Long Description:</label>
+                <textarea id="long_description" name="long_description" class="form-control" rows="5" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="amenities">Amenities:</label>
+                <input type="text" id="amenities" name="amenities" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="lease_length">Lease Length:</label>
+                <input type="text" id="lease_length" name="lease_length" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="utilities">Utilities:</label>
+                <input type="text" id="utilities" name="utilities" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="appliances">Appliances:</label>
+                <input type="text" id="appliances" name="appliances" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="pet_policies">Pet Policies:</label>
+                <input type="text" id="pet_policies" name="pet_policies" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="year_built">Year Built:</label>
+                <input type="number" id="year_built" name="year_built" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="status">Status:</label>
+                <input type="text" id="status" name="status" class="form-control" value = "Available" readonly required>
+            </div>
+       
+            <div class="form-group">
+                <label for="property_type">Property Type:</label>
+                <select id="property_type" name="property_type" required>
+                    <option value="apartment">Apartment</option>
+                    <option value="condo">Condo</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="available_date">Available Date:</label>
+                <input type="date" id="available_date" name="available_date" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="map_location">Map Location (Enter Coordinates):</label>
+                <input type="text" id="map_location" name="map_location" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="country">Country:</label>
+                <select id="country" name="country" class="form-control" required>
+                    {% for country in countries %}
+                        <option value="{{ country }}">{{ country }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="state">State:</label>
+                <select id="state" name="state" class="form-control" required>
+                    {% for state in us_states %}
+                        <option value="{{ state }}">{{ state }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="county">County:</label>
+                <input type="text" id="county" name="county" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="price">Price:</label>
+                <input type="number" id="price" name="price" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="images">Images (Max 5) (PNG, JPG, JPEG, GIF formats only):</label>
+                <input type="file" id="images" name="images" class="form-control-file" multiple accept="image/*">
+            </div>
+            <button type="submit" style="background-color: #241a2d; color: #ffffff;" class="btn btn-primary">Add Listing</button>
+        </form>
+    </div>
+    <br><br><br><br>
+    <div style="background-color: #241a2d; display: flex; justify-content: space-between; align-items: center; padding: 10px;">
+
+        <a href="/">
+            <img style="max-width: 30%;" src="static/logo.png" alt="logo">
+        </a>
+    
+        <p style="color: #ffffff; margin: 0; text-align: right;">
+            © 2023 Property. All Rights Reserved.
+            <br>
+            Information About Brokerage Services 
+            <br>
+            TREC Consumer Notice
+        </p>
+    
+    </div>
+    
+</body>
+
+</html>
+
+
+
+
+
+
+

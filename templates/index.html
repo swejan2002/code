@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+          crossorigin="anonymous">
+    <title>Property Management</title>
+    <style>
+
+        .chatbot-icon {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .chatbot-window {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            width: 300px;
+            max-height: 400px;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .close-chatbot {
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            cursor: pointer;
+        }
+
+        .chatbot-message {
+            background-color: #f0f0f0;
+            padding: 10px;
+            margin: 5px;
+            border-radius: 5px;
+        }
+        .question-button {
+            background-color: #007bff; /* Blue background color */
+            color: #fff; /* White text color */
+            border: none; /* No border */
+            border-radius: 5px; /* Rounded corners */
+            padding: 10px 20px; /* Padding around the text */
+            margin: 5px; /* Margin between buttons */
+            cursor: pointer; /* Cursor style on hover */
+            transition: background-color 0.3s ease; /* Smooth transition effect */
+        }
+
+        .question-button:hover {
+            background-color: #0056b3; /* Darker blue background color on hover */
+        }
+
+    </style>
+
+</head>
+
+<body>
+    <div class="navbar navbar-fixed">
+        <img src="static/logo.png" alt="Logo" class="navbar-logo">
+        <div class="navbar-links">
+            <a href="/">Home</a>
+            <a href="/listings">Property Listings</a>
+            <a href="/resident">Login</a>
+            <a href="/resident">Service Request</a>
+            <a href="/team">Our Team</a>
+            <a href="/about">About</a>
+            <a href="/contact">Contact</a>
+        </div>
+    </div>
+    
+    <div class="main-section" >
+        <br><br> <br>
+        <div class="button-section" style = "background-image: url('static/listing.png');">
+            <br><br> <br><br> 
+            <h1>FIND YOUR HOME HERE</h1>
+        </div>
+        <a href="/listings"><button>View Our Listings</button> </a>
+    </div>
+
+    <br><br> 
+    <div class="featured-properties" style="background-color: #241a2d;"> 
+        <h3>Featured Properties</h3>
+        <hr>
+        <div class="row" style="background-color: #241a2d;">
+            {% for listing in listings[:3] %}
+                <div class="col-sm" style="background-color: #241a2d;">
+                    <h6>{{ listing.property_address }}</h6>
+                    <div class="card mb-2" style="background-color: #241a2d;">
+                        <div class="card-body" style="background-color: #241a2d;">
+                            <div class="property">
+                                <a href="{{ url_for('listing_details', listing_id=listing.id) }}">
+                                    <img class="property-image" src="{{ url_for('static', filename=listing.images[0].image_url) }}" alt="{{ listing.property_address }} Image">
+                                </a>
+                                <p>{{ listing.bedrooms }} Bedroom & {{ listing.bathrooms }} Bath | ${{ listing.price }}</p>
+                                <p>{{ listing.description }}</p>
+                                <p>Available</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <br><br>
+    <div class="icons-section">
+        <div class="icon-container">
+            <a href="/registration">
+                <img src="static/lease.png" alt="Lease Application">   
+            </a>
+            <br>
+            <p>Lease Application</p>
+        </div>
+
+        <div class="icon-container">
+            <a href="/resident">
+                <img src="static/bill.png" alt="Pay Your Bill">   
+            </a>
+            <br>
+            <p>Pay Your Bill Online</p>
+        </div>
+
+        <div class="icon-container">
+            <a href="/resident">
+                <img src="static/service.png" alt="Service Requests">   
+            </a>
+            <br>
+            <p>Service Requests</p>
+        </div>
+    </div>    
+
+
+    <div class="main-section"  style = "background-image: url('static/listing.png');">
+        <button>  
+        <h1 style="text-align: left;">About Property</h1>
+        <p style="text-align: left;">Property is full-service real estate company that provides a personal approach to helping North Texans lease and manage their residential properties. Since 1992, we’ve helped residents and property owners alike feel more satisfied with their properties. Our business operations are guided by the principles of quality, professionalism, and integrity in order to provide the best possible experience to each and every one of our customers.</p>
+        </button> 
+    </div>
+
+
+    <br><br> 
+    <div class="container" > 
+    <div class="row" >
+        <div class="col-sm" >
+            <h3>Residents</h3>
+
+            <div class="card mb-2" style = "background-color: #ffffff;">
+                <div class="card-body" style = "background-color: #ffffff;">
+                        <p>In order to help you through the process of finding and enjoying your ideal residential property, we’ve compiled all necessary information for current and prospective residents here. This page includes application forms, information for move out, FAQs, and more.</p>
+                </div>
+                <a href="/resident"><button>Resident's Page</button> </a>
+            </div>
+            
+        </div>
+        <div class="col-sm" >
+            <h3>Contact an Agent</h3>
+
+            <div class="card mb-2" style = "background-color: #ffffff;">
+                <div class="card-body" style = "background-color: #ffffff;">
+                        <p>Whether you are a current or prospective resident, a potential investor or a property owner, our experienced real estate agents are happy to help you meet your specific goals.</p>
+                <br>
+                </div>
+                <a href="/contact"><button>Contact Us</button> </a>
+            </div>
+            
+        </div>
+
+        <button class="chatbot-icon" id="openChatbot">Q</button>
+
+        <div class="chatbot-window" id="chatbotWindow">
+            <div class="close-chatbot" id="closeChatbot">&times;</div>
+            <br><br>
+            <div id="chatbotMessages"></div>
+            {% for chatbot in chatbots %}
+                <button class="question-button" data-question="{{ chatbot.question }}" data-answer="{{ chatbot.answer }}">{{ chatbot.question }}</button>
+            {% endfor %}
+            <br><br>
+        </div>
+        
+    </div>
+    </div>
+    <br><br> 
+
+
+    <div style="background-color: #241a2d; display: flex; justify-content: space-between; align-items: center; padding: 10px;">
+
+        <a href="/">
+            <img style="max-width: 30%;" src="static/logo.png" alt="logo">
+        </a>
+    
+        <p style="color: #ffffff; margin: 0; text-align: right;">
+            © 2023 Property. All Rights Reserved.
+            <br>
+            Information About Brokerage Services 
+            <br>
+            TREC Consumer Notice
+        </p>
+    
+    </div>
+
+    <script>
+        // Wait for the DOM to be fully loaded
+        window.onload = function () {
+            // Chatbot window
+            const chatbotWindow = document.getElementById('chatbotWindow');
+            const openChatbotButton = document.getElementById('openChatbot');
+            const closeChatbotButton = document.getElementById('closeChatbot');
+    
+            openChatbotButton.addEventListener('click', () => {
+                chatbotWindow.style.display = 'block';
+            });
+    
+            closeChatbotButton.addEventListener('click', () => {
+                chatbotWindow.style.display = 'none';
+            });
+    
+            // Chatbot functionality
+            const chatbotMessages = document.getElementById('chatbotMessages');
+            const sendMessageButton = document.getElementById('sendMessage');
+    
+            // Function to display message in chat window
+            function displayMessage(message) {
+                const messageDiv = document.createElement('div');
+                messageDiv.classList.add('chatbot-message');
+                messageDiv.textContent = message;
+                chatbotMessages.appendChild(messageDiv);
+            }
+    
+            // Add event listener to question buttons
+            const questionButtons = document.querySelectorAll('.question-button');
+            questionButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const question = button.getAttribute('data-question');
+                    const answer = button.getAttribute('data-answer');
+                    displayMessage(answer);
+                });
+            });
+    
+            // Send message functionality
+            sendMessageButton.addEventListener('click', () => {
+                const userMessage = userInput.value;
+                displayMessage(userMessage); // Display user's message
+                // Here you should handle sending user's message to your backend for processing and getting a response
+                // Once you get the response from the backend, you can display it using displayMessage function
+                userInput.value = ''; // Clearing input field
+            });
+        };
+    </script>
+
+    
+</body>
+
+</html>

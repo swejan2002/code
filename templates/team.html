@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+          crossorigin="anonymous">
+          <style>
+            /* Add custom styles here */
+            .team-members {
+                display: flex;
+                justify-content: space-between;
+                flex-wrap: wrap;
+            }
+    
+            .member {
+                text-align: center;
+                margin-bottom: 20px;
+                flex-basis: calc(33.33% - 20px); /* Adjust the width as needed */
+            }
+    
+            .member img {
+                max-width: 100%;
+                height: auto;
+                border-radius: 70%; /* Make the image circular */
+                width: 200px; /* Adjust the size as needed */
+                height: 200px; /* Adjust the size as needed */
+                object-fit: cover; /* Ensure the image covers the entire circle */
+            }
+        </style>
+    <title>Property Management</title>
+</head>
+
+<body>
+    <div class="navbar navbar-fixed">
+        <img src="static/logo.png" alt="Logo" class="navbar-logo">
+        <div class="navbar-links">
+            <a href="/">Home</a>
+            <a href="/listings">Property Listings</a>
+            <a href="/resident">Login</a>
+            <a href="/resident">Service Request</a>
+            <a href="/team">Our Team</a>
+            <a href="/about">About</a>
+            <a href="/contact">Contact</a>
+        </div>
+    </div>
+
+    <br><br> <br>
+    <div class="container">
+        <div>
+            <h1 style="color: #241a2d;">Meet Our Team</h1>
+        </div>
+        <br>
+        <div class="team-members">
+            {% for member in team_members %}
+                <div class="member">
+                    <img src="{{ url_for('static', filename=member.image_url) }}" alt="{{ member.name }} Image">
+                    <h3 style="color: #241a2d;">{{ member.name }}</h3>
+                    <h6 style="color: #241a2d;">{{ member.designation }}</h6>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <br>
+    <br>
+
+
+    <div style="background-color: #241a2d; display: flex; justify-content: space-between; align-items: center; padding: 10px;">
+
+        <a href="/">
+            <img style="max-width: 30%;" src="static/logo.png" alt="logo">
+        </a>
+    
+        <p style="color: #ffffff; margin: 0; text-align: right;">
+            © 2023 Property. All Rights Reserved.
+            <br>
+            Information About Brokerage Services 
+            <br>
+            TREC Consumer Notice
+        </p>
+    
+    </div>
+</body>
+
+</html>

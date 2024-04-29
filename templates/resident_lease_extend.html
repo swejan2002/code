@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+          crossorigin="anonymous">
+    
+
+          <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #ffffff;
+                color: #333;
+            }
+
+            .container {
+                margin-top: 100px;
+            }
+            .tile {
+                display: block;
+                background-color: #fff;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+                text-decoration: none;
+                color: #333;
+                transition: transform 0.3s ease;
+            }
+            .tile:hover {
+                transform: translateY(-5px);
+            }
+            .user-details {
+                background-color: #fff;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+                margin-bottom: 20px;
+            }
+            .user-details h2 {
+                margin-top: 0;
+                color: #333;
+            }
+            .user-details ul {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+            .user-details ul li {
+                margin-bottom: 10px;
+            }
+            .user-details ul li strong {
+                margin-right: 5px;
+                color: #777;
+            }
+            footer {
+                background-color: #241a2d;
+                color: #fff;
+                text-align: center;
+                padding: 20px 0;
+            }
+        </style>
+    <title>Property Management</title>
+</head>
+
+<body>
+    <div class="navbar navbar-fixed">
+        <img src="static/logo.png" alt="Logo" class="navbar-logo">
+        <div class="navbar-links">
+            <a href="/login_home" >Home</a>
+            <a href="/resident_service_requests_details" >Service Request Details</a>
+            <a href="/resident_pay_bill_details" >Payment Details</a>
+            <a href="/resident_lease_details" >Lease Details</a>
+            <form action="/logout" method="POST">
+                <input type="submit" value="Logout" class="btn btn-danger">
+            </form>
+        </div>
+    </div>
+
+    <div class="container">
+        {% if message %}
+        <div class="alert alert-info" role="alert">
+            {{ message }}
+        </div>
+        {% endif %}
+        <div style="background-color: #ffffff; display: flex; justify-content: space-between; align-items: center; padding: 10px;">
+            <h5 style="color:#241a2d;">Please download the lease agreement here. Fill and upload it in Applicant Information section below.</h5>
+            <form action="/download_lease_document/{{0}}" method="POST">
+                <button type="submit" class="btn btn-primary">Download</button>
+            </form>
+        </div>
+
+        <form action="/resident_lease_extend" method="POST" enctype="multipart/form-data">
+ 
+            <!-- Property Information -->
+            <div style="background-color: #241a2d; display: flex; justify-content: space-between; align-items: center; padding: 10px;">
+                <h3 style="color: #ffffff;">Property Information</h3>
+            </div>
+
+            <br><br>
+
+        
+            <div>
+                <label for="propertyAddress">Property Address:</label>
+                <select id="propertyAddress" name="propertyAddress" required>
+                    <option value="{{ listing.property_address }}" readonly selected>{{ listing.property_address }}</option>
+                </select>
+            </div>
+        
+        
+            <div>
+                <label for="leaseType">Lease Type:</label>
+                <select id="leaseType" name="leaseType" required>
+                    <option value="halfyear">Half-year</option>
+                    <option value="fullyear">Full-Year</option>
+                </select>
+            </div>
+        
+            <div>
+                <label for="leaseStartDate">Lease Re-Start Date:</label>
+                <input type="date" id="leaseStartDate" name="leaseStartDate" value="{{ listing.lease_end_date }}" readonly>
+            </div>
+        
+           
+            <div>
+                <label for="applicationFee">Application Fee:</label>
+                <input type="number" id="applicationFee" name="applicationFee" value ="200" readonly required>
+            </div>
+
+            <br><br>
+            <!-- Applicant Information -->
+            <div style="background-color: #241a2d; display: flex; justify-content: space-between; align-items: center; padding: 10px;">
+                <h3 style="color: #ffffff;">Applicant Information</h3>
+            </div>
+            <br><br>
+     
+
+                    <!-- Applicant Information -->
+                <div>
+                    <label for="applicantFullName">Applicant Full Name:</label>
+                    <input type="text" id="applicantFullName" name="applicantFullName" required>
+                </div>
+
+                <div>
+                    <label for="ssn">SSN:</label>
+                    <input type="text" id="ssn" name="ssn" pattern="\d{3}-\d{2}-\d{4}" placeholder="XXX-XX-XXXX" required>
+                </div>
+
+                <div>
+                    <label for="dob">Date of Birth:</label>
+                    <input type="date" id="dob" name="dob" required>
+                </div>
+
+                <div>
+                    <label for="phoneNumbers">Phone Numbers:</label>
+                    <input type="tel" id="phoneNumbers" name="phoneNumbers" placeholder="Enter phone numbers" required>
+                </div>
+
+                <div>
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+
+                <div>
+                    <label for="photoID">Photo ID:</label>
+                    <select id="photoID" name="photoID" required>
+                        <option value="driverLicense">Driver License</option>
+                        <option value="passport">Passport</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="idNumber">ID#:</label>
+                    <input type="text" id="idNumber" name="idNumber" required>
+                </div>
+
+                <div>
+                    <label for="additionalOccupants">Additional Occupants Count:</label>
+                    <input type="number" id="additionalOccupants" name="additionalOccupants" required>
+                </div>
+
+
+ 
+                <div>
+                    <label for="leaseDocument">Other Documents (PDF):</label>
+                    <input type="file" id="leaseDocument" name="leaseDocument" accept="application/pdf">
+                </div>
+                <div>
+                    <label for="signature">Signature:</label>
+                    <input type="text" id="signature" name="signature" placeholder="Type your name as a signature" required>
+                </div>            
+        
+            <br><br>
+            <button style="background-color: #241a2d" type="submit" class="btn btn-primary">Submit</button>
+           
+        </form>
+
+        <br><br>
+    </div>
+    
+    
+    <br><br><br><br>
+    <div style="background-color: #241a2d; display: flex; justify-content: space-between; align-items: center; padding: 10px;">
+
+        <a href="/">
+            <img style="max-width: 30%;" src="static/logo.png" alt="logo">
+        </a>
+    
+        <p style="color: #ffffff; margin: 0; text-align: right;">
+            © 2023 Property. All Rights Reserved.
+            <br>
+            Information About Brokerage Services 
+            <br>
+            TREC Consumer Notice
+        </p>
+    
+    </div>
+    
+</body>
+
+</html>
+
+
+
+
+
+
+

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+          crossorigin="anonymous">
+          <style>
+            /* Add custom styles here */
+            .team-members {
+                display: flex;
+                justify-content: space-between;
+                flex-wrap: wrap;
+            }
+    
+            .member {
+                text-align: center;
+                margin-bottom: 20px;
+                flex-basis: calc(33.33% - 20px); /* Adjust the width as needed */
+            }
+    
+            .member img {
+                max-width: 100%;
+                height: auto;
+                width: 200px; /* Adjust the size as needed */
+                height: 200px; /* Adjust the size as needed */
+                object-fit: cover; /* Ensure the image covers the entire circle */
+            }
+
+
+            .filters {
+            margin-bottom: 20px;
+            }
+
+            .filter-select {
+                margin-right: 10px;
+            }
+        </style>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    
+    <title>Property Management</title>
+</head>
+
+<body>
+    <div class="navbar navbar-fixed">
+        <img src="static/logo.png" alt="Logo" class="navbar-logo">
+        <div class="navbar-links">
+            <a href="/">Home</a>
+            <a href="/listings">Property Listings</a>
+            <a href="/resident">Login</a>
+            <a href="/resident">Service Request</a>
+            <a href="/team">Our Team</a>
+            <a href="/about">About</a>
+            <a href="/contact">Contact</a>
+        </div>
+    </div>
+
+    <br><br> <br>
+    <div class="container">
+        <div>
+            <h1 style="color: #241a2d;">Find Your Residential Property Here !</h1>
+        </div>
+
+        <br>
+
+        <form method="POST" action="{{ url_for('listings') }}" id="filter-form" class="my-3">
+            <div class="form-row align-items-end">
+                <div class="col-md-3 mb-3">
+                    <label for="county-filter" class="sr-only">County:</label>
+                    <select name="county-filter" id="county-filter" class="form-control">
+                        <option value="">Select County</option>
+                        {% for county in counties %}
+                            <option value="{{ county }}">{{ county }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+        
+                <div class="col-md-3 mb-3">
+                    <label for="state-filter" class="sr-only">State:</label>
+                    <select name="state-filter" id="state-filter" class="form-control">
+                        <option value="">Select State</option>
+                        {% for state in states %}
+                            <option value="{{ state }}">{{ state }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+        
+                <div class="col-md-3 mb-3">
+                    <label for="country-filter" class="sr-only">Country:</label>
+                    <select name="country-filter" id="country-filter" class="form-control">
+                        <option value="">Select Country</option>
+                        {% for country in countries %}
+                            <option value="{{ country }}">{{ country }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+        
+                <div class="col-md-3 mb-3">
+                    <button style="background-color: #241a2d" type="submit" class="btn btn-primary">Apply Filters</button>
+                </div>
+            </div>
+        </form>
+        
+        <br>
+
+        
+    </div>
+    <br>
+    <br>
+    <div class="container">
+        <div class="property-details mt-4">
+            <h1>{{ listing.property_address }}</h1>
+
+            <h3><strong>Price:</strong> {{ listing.price }}<h3>
+
+            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner">
+                    {% for image in listing.images %}
+                        <div class="carousel-item {% if loop.first %}active{% endif %}">
+                            <img src="{{ url_for('static', filename=image.image_url) }}" class="d-block w-100" alt="Property Image">
+                        </div>
+                    {% endfor %}
+                </div>
+                <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+
+            <div class="property-info mt-4">
+                <h2>Property Information</h2>
+                <!-- Add Bootstrap classes for styling -->
+                <p class="lead"><strong>Description:</strong> {{ listing.description }}</p>
+                <p class="lead"><strong>Long Description:</strong> {{ listing.long_description }}</p>
+                <p class="lead"><strong>Amenities:</strong> {{ listing.amenities }}</p>
+                <p class="lead"><strong>Lease Length:</strong> {{ listing.lease_length }}</p>
+                <p class="lead"><strong>Utilities:</strong> {{ listing.utilities }}</p>
+                <p class="lead"><strong>Appliances:</strong> {{ listing.appliances }}</p>
+                <p class="lead"><strong>Pet Policies:</strong> {{ listing.pet_policies }}</p>
+                <p class="lead"><strong>Year Built:</strong> {{ listing.year_built }}</p>
+                <p class="lead"><strong>Status:</strong> {{ listing.status }}</p>
+                <p class="lead"><strong>Property Type:</strong> {{ listing.property_type }}</p>
+                <p class="lead"><strong>Available Date:</strong> {{ listing.available_date }}</p>
+                <p class="lead"><strong>Map Location:</strong> {{ listing.map_location }}</p>
+                <p class="lead"><strong>Country:</strong> {{ listing.country }}</p>
+                <p class="lead"><strong>State:</strong> {{ listing.state }}</p>
+                <p class="lead"><strong>County:</strong> {{ listing.county }}</p>
+
+                
+                <button style="background-color: #241a2d" class="btn btn-primary"><a href="/contact">Contact Us</a></button> 
+
+                <div id="property-map" style="height: 400px;"></div>
+
+            </div>
+        </div>
+    </div>
+
+    
+
+    <!-- Add any additional sections or styling as needed -->
+
+    <!-- Bootstrap JS and jQuery (required for Bootstrap components) -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js" integrity="sha384-zz5vb7hUEzgWt6goW9N/ncimTCW8Uf9ZMuhqrzeSjPKpe4zFAV63EFW9RbeW5faF" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBpOmrbUg1RU2rfH9c3ynIbbVp4TKgGCt8iSHZJUn3W" crossorigin="anonymous"></script>
+
+
+    <div style="background-color: #241a2d; display: flex; justify-content: space-between; align-items: center; padding: 10px;">
+
+        <a href="/">
+            <img style="max-width: 30%;" src="static/logo.png" alt="logo">
+        </a>
+    
+        <p style="color: #ffffff; margin: 0; text-align: right;">
+            © 2023 Property. All Rights Reserved.
+            <br>
+            Information About Brokerage Services 
+            <br>
+            TREC Consumer Notice
+        </p>
+    
+    </div>
+
+    <script>
+        // Extract latitude and longitude from the Map Location field
+        const mapLocation = "{{ listing.map_location }}";
+        
+        // Regular expression to match latitude and longitude values
+        const regex = /Latitude: (\-?\d+\.\d+), Longitude: (\-?\d+\.\d+)/;
+        const match = mapLocation.match(regex);
+    
+        // Check if the match is successful and extract the values
+        if (match) {
+            const latitude = parseFloat(match[1]);
+            const longitude = parseFloat(match[2]);
+    
+            // Create a new map centered at the specified coordinates
+            const map = L.map('property-map').setView([latitude, longitude], 15);
+    
+            // Add a tile layer from OpenStreetMap
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors',
+                maxZoom: 18,
+            }).addTo(map);
+    
+            // Add a marker at the specified coordinates
+            L.marker([latitude, longitude]).addTo(map)
+                .bindPopup('Property Location')
+                .openPopup();
+        } else {
+            console.error("Invalid map location format");
+        }
+    </script>
+    
+    
+    
+</body>
+
+</html>

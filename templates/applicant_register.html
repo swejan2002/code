@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+          crossorigin="anonymous">
+    <title>Property Management</title>
+</head>
+
+
+<body>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Your JavaScript code here
+            document.getElementById('registrationForm').addEventListener('submit', function(event) {
+                var form = event.target;
+        
+                // Check if all fields are populated
+                var email = form.querySelector('#email').value;
+                var password = form.querySelector('#password').value;
+                var firstName = form.querySelector('#first_name').value;
+                var lastName = form.querySelector('#last_name').value;
+                var phoneNumber = form.querySelector('#phone_number').value;
+                var address = form.querySelector('#address').value;
+        
+                if (!email || !password || !firstName || !lastName || !phoneNumber || !address) {
+                    alert("Please fill in all fields.");
+                    event.preventDefault();
+                    return false;
+                }
+        
+                // Custom validation for Gmail address
+                if (!isValidGmail(email)) {
+                    form.querySelector('#email').classList.add('is-invalid');
+                    event.preventDefault();
+                    return false;
+                }
+        
+                // Custom validation for phone number
+                if (!isValidPhoneNumber(phoneNumber)) {
+                    form.querySelector('#phone_number').classList.add('is-invalid');
+                    event.preventDefault();
+                    return false;
+                }
+        
+                // Custom validation for password length and alphanumeric characters
+                if (password.length < 10 || !isAlphanumeric(password)) {
+                    form.querySelector('#password').classList.add('is-invalid');
+                    event.preventDefault();
+                    return false;
+                }
+        
+                // If all validations pass, submit the form
+                return true;
+            });
+        
+            function isValidGmail(email) {
+                var regex = /^[a-zA-Z0-9._%+-]+@gmail.com$/;
+                return regex.test(email);
+            }
+        
+            function isValidPhoneNumber(phoneNumber) {
+                var regex = /^\d{10}$/; // Ensure 10 digits
+                return regex.test(phoneNumber);
+            }
+        
+            function isAlphanumeric(input) {
+                var regex = /^[a-zA-Z0-9]+$/; // Alphanumeric characters only
+                return regex.test(input);
+            }
+        });
+        </script>
+        
+        
+        
+    
+    <div class="navbar navbar-fixed">
+        <img src="static/logo.png" alt="Logo" class="navbar-logo">
+        <div class="navbar-links">
+            <a href="/">Home</a>
+            <a href="/listings">Property Listings</a>
+            <a href="/resident">Login</a>
+            <a href="/resident">Service Request</a>
+            <a href="/team">Our Team</a>
+            <a href="/about">About</a>
+            <a href="/contact">Contact</a>
+        </div>
+    </div>
+
+
+    <div class="container" style="padding: 20px;">
+        {% if message %}
+        <div class="alert alert-info" role="alert">
+            {{ message }}
+        </div>
+        {% endif %}
+        <h2>Register</h2>
+        <form id="registrationForm" action="/registration" method="POST" class="needs-validation" novalidate>
+            <div class="form-group">
+                <label for="email">Email Address:</label>
+                <input type="email" id="email" name="email" class="form-control" required>
+                <div class="invalid-feedback">Please enter a valid email address.</div>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" class="form-control" required>
+                <div class="invalid-feedback">Please enter a password.</div>
+            </div>
+            <div class="form-group">
+                <label for="first_name">First Name:</label>
+                <input type="text" id="first_name" name="first_name" class="form-control" required>
+                <div class="invalid-feedback">Please enter your first name.</div>
+            </div>
+            <div class="form-group">
+                <label for="last_name">Last Name:</label>
+                <input type="text" id="last_name" name="last_name" class="form-control" required>
+                <div class="invalid-feedback">Please enter your last name.</div>
+            </div>
+            <div class="form-group">
+                <label for="phone_number">Phone Number:</label>
+                <input type="tel" id="phone_number" name="phone_number" class="form-control" placeholder="(XXX)XXX-XXXX" required>
+                <div class="invalid-feedback">Please enter a valid phone number.</div>
+            </div>
+            <div class="form-group">
+                <label for="address">Address:</label>
+                <input type="text" id="address" name="address" class="form-control" required>
+            </div>
+    
+            <button type="submit" class="btn btn-dark">Register</button>
+        </form>
+    </div>
+    
+
+
+    <div style="background-color: #241a2d; display: flex; justify-content: space-between; align-items: center; padding: 10px;">
+
+        <a href="/">
+            <img style="max-width: 30%;" src="static/logo.png" alt="logo">
+        </a>
+    
+        <p style="color: #ffffff; margin: 0; text-align: right;">
+            © 2023 Property. All Rights Reserved.
+            <br>
+            Information About Brokerage Services 
+            <br>
+            TREC Consumer Notice
+        </p>
+    
+    </div>
+    
+</body>
+
+</html>

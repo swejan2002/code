@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+          crossorigin="anonymous">
+    <title>Property Management</title>
+</head>
+
+<body>
+    <div class="navbar navbar-fixed">
+        <img src="static/logo.png" alt="Logo" class="navbar-logo">
+        <div class="navbar-links">
+            <a href="/">Home</a>
+            <a href="/listings">Property Listings</a>
+            <a href="/resident">Login</a>
+            <a href="/resident">Service Request</a>
+            <a href="/team">Our Team</a>
+            <a href="/about">About</a>
+            <a href="/contact">Contact</a>
+        </div>
+    </div>
+    
+    <br><br> <br>
+    <div class="container" > 
+    <div>
+        <h1 style = "color: #241a2d;">About Us</h1>
+        <br>
+        <h4 style = "color: #241a2d;">Our History and Principles</h4>
+
+        <p style = "color: #000000;">
+
+            For more than three decades, Property has been dedicated to providing the residents and property owners of Denton County and the surrounding communities with high quality service and an expansive selection of properties. Property’s leadership coupled with the expertise and diligence of our experienced staff has allowed us to grow into the leading residential leasing and property management company in the area.
+        </p>
+        <p style = "color: #000000;">
+            Property is a wholly independent agency that is driven by the values of quality, professionalism, and integrity, because we know that our clients deserve the best. Our agents provide highly personalized service to each and every client in order to help residents and property owners alike. We are invested in enriching our shared community through client satisfaction, and therefore operate with the highest degree of professionalism. When  residents and property owners are happy, our community becomes a more positive and fulfilling place to live, work, and enjoy.
+        </p>
+        <p style = "color: #000000;">   
+            Our selectin of properties is unrivaled by any other real estate company and includes apartments, townhomes, duplexes, houses, and more to ensure residents can find a property that perfectly suits their lifestyle and budget. Because our selection of properties is so expansive, the Property staff is highly knowledgeable about the leasing and management of a variety of property types. Additionally, we have experience in serving many different resident communities, from college students to working professionals.
+        </p>
+
+    </div>
+    </div>
+
+    <br>
+    <br>
+
+
+    <div class="main-section"  style = "background-image: url('static/listing.png');">
+        <button>  
+        <h1 style="text-align: left;">About Property</h1>
+        <p style="text-align: left;">
+            In addition to providing top-notch residential leasing and management services to the people of Denton County, the Property family of companies also houses the Real T Team and Property Commercial, which provide residential and commercial realty services.
+        </p>
+        </button> 
+    </div>
+
+    <br><br><br>
+    <div style="background-color: #241a2d; display: flex; justify-content: space-between; align-items: center; padding: 10px;">
+
+        <h3 style="color: #ffffff; text-align: center;">Awards</h3>
+
+            <p style="color: #ffffff; margin: 0; text-align: left;">
+                2022 Best of Denton County Winner
+    
+                Best Property Management Firm
+                <br>
+                2021 Best of Denton County Winner
+                
+                Best Property Management Firm
+                <br>
+                2020 Best of Denton County Winner
+     
+                Best Property Management Firm</p>
+
+    </div>   
+
+
+
+    <br><br> 
+    <div class="container" > 
+        <div class="row" >
+            <div class="col-sm" >
+                <h3>Residents</h3>
+    
+                <div class="card mb-2" style = "background-color: #ffffff;">
+                    <div class="card-body" style = "background-color: #ffffff;">
+                            <p>In order to help you through the process of finding and enjoying your ideal residential property, we’ve compiled all necessary information for current and prospective residents here. This page includes application forms, information for move out, FAQs, and more.</p>
+                    </div>
+                    <a href="/resident"><button>Resident's Page</button> </a>
+                </div>
+                
+            </div>
+            <div class="col-sm" >
+                <h3>Contact an Agent</h3>
+    
+                <div class="card mb-2" style = "background-color: #ffffff;">
+                    <div class="card-body" style = "background-color: #ffffff;">
+                            <p>Whether you are a current or prospective resident, a potential investor or a property owner, our experienced real estate agents are happy to help you meet your specific goals.</p>
+                    <br>
+                    </div>
+                    <a href="/contact"><button>Contact Us</button> </a>
+                </div>
+                
+            </div>
+        </div>
+        </div>
+    <br><br> 
+
+
+
+
+    <div style="background-color: #241a2d; display: flex; justify-content: space-between; align-items: center; padding: 10px;">
+
+        <a href="/">
+            <img style="max-width: 30%;" src="static/logo.png" alt="logo">
+        </a>
+    
+        <p style="color: #ffffff; margin: 0; text-align: right;">
+            © 2023 Property. All Rights Reserved.
+            <br>
+            Information About Brokerage Services 
+            <br>
+            TREC Consumer Notice
+        </p>
+    
+    </div>
+    
+</body>
+
+</html>
